@@ -1,0 +1,59 @@
+//    //////////// mapListFields
+//    {
+//    // _rio_a = recordOut
+//    org.apache.hadoop.record.RecordOutput recordOutput;
+//    recordOutput.startMap(mapListFields,"mapListFields");
+//    // _rio_es1 = entrySet
+//    Set<Entry<String, ArrayList<TreeMap<String,Buffer>>>> entrySet = mapListFields.entrySet();
+//    // _rio_midx1 = itMap
+//    for(Iterator<Entry<String, ArrayList<TreeMap<String, Buffer>>>> itMap = entrySet.iterator(); itMap.hasNext();) {
+//      // _rio_me1 = entry
+//      Entry<String, ArrayList<TreeMap<String, Buffer>>> entry = itMap.next();
+//      String keyString = entry.getKey();
+//      ArrayList<TreeMap<String, Buffer>> vector = entry.getValue();
+//      // _rio_k1 = key
+//      recordOutput.writeString(keyString,"_rio_k1");
+//      {
+//        // _rio_v1 = vector
+//        recordOutput.startVector(vector,"_rio_v1");
+//        // _rio_len1 = vectorSize
+//        int vectorSize = vector.size();
+//        // _rio_vidx1 = i
+//        for(int i = 0; i<vectorSize; i++) {
+//          // _rio_e1 = vectorElement
+//          TreeMap<String, Buffer> vectorElement = vector.get(i);
+//          {
+//            recordOutput.startMap(vectorElement,"_rio_e1");
+//            // _rio_es2 = vectorElementEntrySet
+//            Set<Map.Entry<String, Buffer>> vectorElementEntrySet = vectorElement.entrySet();
+//            // _rio_midx2 = vectorElementEntrySetIterator
+//            for(Iterator<Map.Entry<String, Buffer>> vectorElementEntrySetIterator 
+//                = vectorElementEntrySet.iterator(); vectorElementEntrySetIterator.hasNext();) {
+//              // _rio_me2 = vectorElementEntrySetMapEntry
+//              Map.Entry<String, Buffer> vectorElementEntrySetMapEntry = vectorElementEntrySetIterator.next();
+//              // _rio_k2 = vectorElementEntrySetMapEntryKey
+//              String vectorElementEntrySetMapEntryKey = vectorElementEntrySetMapEntry.getKey();
+//              // _rio_v2 = vectorElementEntrySetMapEntryValue
+//              Buffer vectorElementEntrySetMapEntryValue = vectorElementEntrySetMapEntry.getValue();
+//              recordOutput.writeString(vectorElementEntrySetMapEntryKey,"_rio_k2");
+//              recordOutput.writeBuffer(vectorElementEntrySetMapEntryValue,"_rio_v2");
+//            }
+//            recordOutput.endMap(vectorElement,"_rio_e1");
+//          }
+//        }
+//        recordOutput.endVector(vector,"_rio_v1");
+//      }
+//    }
+//    recordOutput.endMap(mapListFields,"mapListFields");
+//    }
+
+
+
+Found 4 items
+-rw-------   3 tanping users   48260435 2011-08-30 21:48 /user/tanping/rcoutput/part-00000
+-rw-------   3 tanping users   46897137 2011-08-30 21:48 /user/tanping/rcoutput/part-00001
+-rw-------   3 tanping users   46562912 2011-08-30 21:48 /user/tanping/rcoutput/part-00002
+-rw-------   3 tanping users   11020700 2011-08-30 21:48 /user/tanping/rcoutput/part-00003
+[tanping@gwbl7001 ~]$ hadoop fs -ls /user/tanping/input/part-00601
+Found 1 items
+-rw-------   3 tanping users  434766231 2011-08-17 01:56 /user/tanping/input/part-00601

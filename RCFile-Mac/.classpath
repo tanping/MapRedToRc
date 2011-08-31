@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-cli-2.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-0.20.2-core.jar" sourcepath="/Apache-hadoop-0.20.2"/>
+	<classpathentry kind="lib" path="lib/hive-exec-0.8.0-SNAPSHOT.jar" sourcepath="/hive"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
