@@ -21,23 +21,6 @@ public class ABF1RCPrinterMapper extends MapReduceBase implements
   @Override
   public void map(ETLKey key, ETLValue value, OutputCollector output,
       Reporter reporter) throws IOException {
-//    Buffer bcookie = new Buffer();
-//    bcookie = key.getBcookie();
-//    long ts = (long) 0;
-//    ts = key.getTimestamp();
-//
-//    String keyStr = "Bcookie = " + bcookie + " :: TimeStamp = " + ts;
-//    if (bcookie == null) {
-//      bcookie = new Buffer();
-//      System.out.println("BCookie is null.");
-//    }
-
-//    String valStr = new String();
-//    valStr += FieldSerializer.mapToString(value.getSimpleFields());
-//    valStr += FieldSerializer.mapOfMapToString(value.getMapFields());
-//    valStr += FieldSerializer.listMapToString(value.getMapListFields());
-
-    //ETLRCKeyValue rcKeyValue = new ETLRCKeyValue(key, value);
     LOKeyValue keyValue = new LOKeyValue(key, value);
     output.collect(new LongWritable(1), keyValue);
   }
