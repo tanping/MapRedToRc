@@ -64,12 +64,16 @@ public class LOKeyValue extends BytesRefArrayWritable implements Cloneable{
     TreeMap<String, Buffer> simpleFields = eValue.getSimpleFields();
     // feed
     Buffer entry = simpleFields.get("feed");
-    if (entry != null) {
+    if (entry == null) {
+      set(index++, new BytesRefWritable());
+    } else {
       set(index++, new BytesRefWritable(entry.get()));
     }
     // datestamp
     entry = simpleFields.get("datestamp");
-    if (entry != null) {
+    if (entry == null) {
+      set(index++, new BytesRefWritable());
+    } else {
       set(index++, new BytesRefWritable(entry.get()));
     }
     // going over every utlSimpleFields key 
@@ -77,7 +81,9 @@ public class LOKeyValue extends BytesRefArrayWritable implements Cloneable{
     for (int i = 0; i < UltRequiredFiledName.ultSimpleFields.length; i++) {
       String requiredKey = UltRequiredFiledName.ultSimpleFields[i];
       entry = simpleFields.get(requiredKey); 
-      if (entry != null) {
+      if (entry == null) {
+        set(index++, new BytesRefWritable());
+      } else {
         set(index++, new BytesRefWritable(entry.get()));
       }
     }
