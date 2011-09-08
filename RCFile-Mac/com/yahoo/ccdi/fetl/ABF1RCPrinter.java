@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.ql.io.RCFile;
 import org.apache.hadoop.hive.ql.io.RCFileOutputFormat;
@@ -28,7 +27,6 @@ import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapred.RunningJob;
 import org.apache.hadoop.mapred.TextOutputFormat;
 import org.apache.hadoop.mapred.SequenceFileInputFormat;
-import org.apache.hadoop.mapred.SortValidator.RecordStatsChecker.NonSplitableSequenceFileInputFormat;
 import org.apache.hadoop.mapred.lib.IdentityReducer;
 
 public class ABF1RCPrinter {
@@ -62,13 +60,6 @@ public class ABF1RCPrinter {
     }
   }
 
-  public static class NonSplitableSequenceFileInputFormat 
-  extends SequenceFileInputFormat {
-  protected boolean isSplitable(FileSystem fs, Path filename) {
-    return false;
-  }
-}
-  
     public static void main(String[] args) throws Exception {        
         Configuration conf = new Configuration();
             
@@ -78,10 +69,8 @@ public class ABF1RCPrinter {
         aBF1RCPrint.setMapperClass(ABF1RCPrinterMapper.class);
         aBF1RCPrint.setReducerClass(/*IdentityReducer.class*/Reducer.class);
         
-        //aBF1RCPrint.setInputFormat(SequenceFileInputFormat.class);
-        aBF1RCPrint.setInputFormat(NonSplitableSequenceFileInputFormat.class);
+        aBF1RCPrint.setInputFormat(SequenceFileInputFormat.class);
         aBF1RCPrint.setOutputFormat(RCFileOutputFormat.class);
-        
         RCFileOutputFormat.setCompressOutput(aBF1RCPrint, true);
         RCFileOutputFormat.setColumnNumber(aBF1RCPrint, COLUMN_NUMBER);
         
