@@ -1,0 +1,6 @@
+module com.yahoo.ccdi.fetl {
+  class RcETLKey {
+    buffer bcookie;
+    long timestamp;
+  }
+}

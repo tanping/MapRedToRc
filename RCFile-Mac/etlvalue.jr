@@ -1,0 +1,10 @@
+module com.yahoo.ccdi.fetl {
+  class ETLValue {
+    long filterTag;
+    long dhrTag;
+    long transformErrorTag;
+    map<ustring, buffer> simpleFields;
+    map<ustring, map<ustring, buffer> > mapFields;
+    map<ustring, vector<map<ustring, buffer> > > mapListFields;
+  }
+}
