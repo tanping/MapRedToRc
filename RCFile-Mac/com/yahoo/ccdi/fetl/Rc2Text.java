@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,46 +70,32 @@ public class Rc2Text extends Configured implements Tool {
    * (<b>word</b>, <b>1</b>).
    */
   public static class MapClass extends MapReduceBase
-    implements Mapper<LongWritable, BytesRefArrayWritable, LongWritable, Text /*Text, IntWritable*/> {
+    implements Mapper<LongWritable, BytesRefArrayWritable, LongWritable, Text> {
 
 @Override
     public void map(LongWritable key, BytesRefArrayWritable value,
         OutputCollector<LongWritable, Text /*Text, IntWritable*/> output, Reporter reporter)
         throws IOException {
        int capacity = value.size();
-       //System.out.println("## The Map Value's capacity is "+capacity);
        int index = 0;
        StringBuilder sb = new StringBuilder();
        // convert value back to string
        Text bcookie = new Text(value.get(index++).getBytesCopy());
        sb.append(bcookie.toString() + delim);
-//       ByteArrayInputStream bis = new ByteArrayInputStream(value.get(index++).getBytesCopy()); 
-//       DataInputStream dis = new DataInputStream(bis); 
-//       String bcookie = dis.readLine(); 
-//       sb.append(bcookie + delim);
        // convert timestmap (1), 3 tags byte array back to long
        while ( index < 5 ) { 
          ByteArrayInputStream bis = new ByteArrayInputStream(value.get(index++).getBytesCopy()); 
          DataInputStream dis = new DataInputStream(bis); 
-         long timestampLong = dis.readLong(); 
-         sb.append(timestampLong + delim);
+         long varLong = dis.readLong(); 
+         sb.append(varLong + delim);
        }
        while (index < capacity) {
          byte[] ba = value.get(index++).getBytesCopy();
-//         if (ba.length == 0) {
-//           System.out.println("### Byte array size is zero.");
-//         }
          Text simple = new Text(ba);
          sb.append(simple.toString() + delim);
        }
        output.collect(key, new Text(sb.toString()));
     }
-  }
-  
-  static int printUsage() {
-    System.out.println("wordcount [-m <maps>] [-r <reduces>] <input> <output>");
-    ToolRunner.printGenericCommandUsage(System.out);
-    return -1;
   }
   
   public static class Reduce extends MapReduceBase
@@ -135,26 +122,18 @@ public class Rc2Text extends Configured implements Tool {
  
     // the keys are words (strings)
     conf.setOutputKeyClass(LongWritable.class);
-    // the values are counts (ints)
     conf.setOutputValueClass(Text.class);
     
     conf.setMapperClass(MapClass.class);        
-    //conf.setCombinerClass(Reduce.class);
     conf.setReducerClass(Reduce.class);
     
     ColumnProjectionUtils.setFullyReadColumns(conf);
     conf.setInputFormat(RCFileInputFormat.class);
     conf.setOutputFormat(TextOutputFormat.class);
-    
-//    // set RC file reader only reads columns 2, 3
-//    ArrayList<Integer> readCols = new ArrayList<Integer>();
-//    readCols.add(Integer.valueOf(1));
-//    readCols.add(Integer.valueOf(2));
-//    ColumnProjectionUtils.setReadColumnIDs(conf, readCols);
 
-    conf.set("mapred.output.compress", "true");
-    conf.set("mapred.output.compression.type","BLOCK");
-    conf.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
+//    conf.set("mapred.output.compress", "true");
+//    conf.set("mapred.output.compression.type","BLOCK");
+//    conf.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
     
     
     conf.set("mapred.job.queue.name", conf.get("mapred.job.queue.name"));
@@ -172,18 +151,18 @@ public class Rc2Text extends Configured implements Tool {
         }
       } catch (NumberFormatException except) {
         System.out.println("ERROR: Integer expected instead of " + args[i]);
-        return printUsage();
+        return -1;
       } catch (ArrayIndexOutOfBoundsException except) {
         System.out.println("ERROR: Required parameter missing from " +
                            args[i-1]);
-        return printUsage();
+        return -1;
       }
     }
     // Make sure there are exactly 2 parameters left.
     if (other_args.size() != 2) {
       System.out.println("ERROR: Wrong number of parameters: " +
                          other_args.size() + " instead of 2.");
-      return printUsage();
+      return -1;
     }
     FileInputFormat.setInputPaths(conf, other_args.get(0));
     FileOutputFormat.setOutputPath(conf, new Path(other_args.get(1)));

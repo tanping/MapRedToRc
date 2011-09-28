@@ -9,11 +9,11 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
 import com.yahoo.ccdi.fetl.ETLKey;
-import com.yahoo.ccdi.fetl.ETLValue;
+import com.yahoo.ccdi.fetl.CustomETLValue;
 import com.yahoo.ccdi.fetl.FieldSerializer;
 
 public class ABF1PrinterMapper extends MapReduceBase implements
-    Mapper<ETLKey, ETLValue, NullWritable, Text> {
+    Mapper<ETLKey, ETLValue, Text, Text> {
 
   @Override
   public void map(ETLKey key, ETLValue value, OutputCollector output,

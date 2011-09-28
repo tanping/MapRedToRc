@@ -17,7 +17,6 @@ import org.apache.hadoop.hive.serde2.columnar.BytesRefWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.WritableUtils;
 import org.apache.hadoop.record.Buffer;
-import org.apache.hadoop.record.RecordOutput;
 
 public class LOKeyValue extends BytesRefArrayWritable implements Cloneable{
   
@@ -33,7 +32,7 @@ public class LOKeyValue extends BytesRefArrayWritable implements Cloneable{
   public LOKeyValue() {
   }
 
-  public LOKeyValue(ETLKey eKey, ETLValue eValue) {
+  public LOKeyValue(ETLKey eKey, CustomETLValue eValue) {
     
     // flatten key data structure
     Buffer bcookie = eKey.getBcookie();
@@ -66,7 +65,7 @@ public class LOKeyValue extends BytesRefArrayWritable implements Cloneable{
     Buffer entry = simpleFields.get("feed");
     if (entry == null) {
       set(index++, new BytesRefWritable());
-    } else {
+    }else {
       set(index++, new BytesRefWritable(entry.get()));
     }
     // datestamp

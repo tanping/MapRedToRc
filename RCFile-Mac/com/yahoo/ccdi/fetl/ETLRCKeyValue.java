@@ -20,7 +20,7 @@ public class ETLRCKeyValue extends BytesRefArrayWritable implements Cloneable{
   
   public ETLRCKeyValue() {}
 
-  public ETLRCKeyValue(ETLKey eKey, ETLValue eValue) {
+  public ETLRCKeyValue(ETLKey eKey, CustomETLValue eValue) {
     
     // flatten key data structure
     Buffer bcookie = eKey.getBcookie();

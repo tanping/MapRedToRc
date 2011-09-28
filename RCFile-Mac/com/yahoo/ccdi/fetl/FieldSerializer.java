@@ -18,22 +18,41 @@ import org.apache.hadoop.record.Buffer;
  */
 public class FieldSerializer {
     public static String mapToString(TreeMap<String, Buffer> map) throws IOException {
-        Buffer output = new Buffer(); 
-        Iterator itr = map.entrySet().iterator();
-        boolean first = true;
-        while (itr.hasNext()) {
-            if (first) {
-                first = false;
-            } else {
-                output.append(", ".getBytes());
-            }
-            Map.Entry<String, Buffer> entry = (Map.Entry<String, Buffer>)itr.next();
-            output.append(entry.getKey().getBytes());
-            output.append(" = ".getBytes());
-            output.append(entry.getValue().get());
-        }
+//        Buffer output = new Buffer(); 
+//        Iterator itr = map.entrySet().iterator();
+//        boolean first = true;
+//        while (itr.hasNext()) {
+//            if (first) {
+//                first = false;
+//            } else {
+//                output.append(", ".getBytes());
+//            }
+//            Map.Entry<String, Buffer> entry = (Map.Entry<String, Buffer>)itr.next();
+//            output.append(entry.getKey().getBytes());
+//            output.append(" = ".getBytes());
+//            //output.append(entry.getValue().get());
+//            output.append(entry.getValue().get());
+//        }
+//
+//        return output.toString("UTF-8");
+      
 
-        return output.toString("UTF-8");
+    StringBuilder sb = new StringBuilder();
+    Iterator itr = map.entrySet().iterator();
+    boolean first = true;
+    while (itr.hasNext()) {
+        if (first) {
+            first = false;
+        } else {
+          sb.append(",");
+        }
+        Map.Entry<String, Buffer> entry = (Map.Entry<String, Buffer>)itr.next();
+        sb.append(entry.getKey());
+        sb.append("=");
+        sb.append(entry.getValue().toString("UTF-8"));
+    }
+
+    return sb.toString();
     }
     
     public static String serializeMap(TreeMap<String, Buffer> map) throws IOException {

@@ -33,10 +33,15 @@ import org.apache.hadoop.util.GenericOptionsParser;
     public static class ABF1Seq2SeqPrinterMapper extends MapReduceBase implements
     Mapper<ETLKey, ETLValue, ETLKey, ETLValue> {
       
+      static int linenumber = 0;
+      
       @Override
       public void map(ETLKey key, ETLValue value, OutputCollector output,
           Reporter reporter) throws IOException {
+        System.out.println("### Seq2Seq mapper linenumber = "+linenumber);
+        if ( linenumber++ < 6) {
           output.collect(key, value);
+        }
       }
     }
       
@@ -72,7 +77,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
         
         ABF1Print.setJobName(conf.get("mapred.job.name", "ETLSeq2ETLSeq"));
         ABF1Print.setMapperClass(ABF1Seq2SeqPrinterMapper.class);
-        ABF1Print.setReducerClass(Reducer.class);
+        ABF1Print.setReducerClass(Reduce.class);
         
         ABF1Print.setInputFormat(NonSplitableSequenceFileInputFormat.class);
         ABF1Print.setOutputFormat(SequenceFileOutputFormat.class);
@@ -89,9 +94,9 @@ import org.apache.hadoop.util.GenericOptionsParser;
         ABF1Print.set("mapred.job.queue.name", "audience_fetl");
 
         // compress
-        ABF1Print.set("mapred.output.compress", "true");
-        ABF1Print.set("mapred.output.compression.type", "BLOCK");
-        ABF1Print.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
+//        ABF1Print.set("mapred.output.compress", "true");
+//        ABF1Print.set("mapred.output.compression.type", "BLOCK");
+//        ABF1Print.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
         
         FileInputFormat.setInputPaths(ABF1Print, otherArgs[0]);
         FileOutputFormat.setOutputPath(ABF1Print, new Path(otherArgs[1]));
@@ -117,7 +122,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
             } 
             else {
               // by default, 0 reducer
-              ABF1Print.setNumReduceTasks(0);
+              ABF1Print.setNumReduceTasks(1);
               other_args.add(args[i]);
             }
           } catch (NumberFormatException except) {

@@ -1,6 +1,7 @@
 package com.yahoo.ccdi.fetl;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
@@ -15,6 +16,13 @@ import org.apache.hadoop.mapred.lib.IdentityReducer;
 
 public class ABF1Printer {
 
+  public static class NonSplitableSequenceFileInputFormat extends
+      SequenceFileInputFormat {
+    protected boolean isSplitable(FileSystem fs, Path filename) {
+      return false;
+    }
+  }
+  
     public static void main(String[] args) throws Exception {        
         Configuration conf = new Configuration();
         
@@ -26,7 +34,7 @@ public class ABF1Printer {
         ABF1Print.setMapperClass(ABF1PrinterMapper.class);
         ABF1Print.setReducerClass(IdentityReducer.class);
         
-        ABF1Print.setInputFormat(SequenceFileInputFormat.class);
+        ABF1Print.setInputFormat(NonSplitableSequenceFileInputFormat.class);
         ABF1Print.setOutputFormat(TextOutputFormat.class);
         
         ABF1Print.setMapOutputKeyClass(Text.class);
@@ -40,10 +48,10 @@ public class ABF1Printer {
         ABF1Print.set("mapred.job.queue.name", conf.get("mapred.job.queue.name"));
         ABF1Print.set("mapred.job.queue.name", "audience_fetl");
 
-        // compress
-    ABF1Print.set("mapred.output.compress", "true");
-    ABF1Print.set("mapred.output.compression.type", "BLOCK");
-    ABF1Print.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
+//        // compress
+//    ABF1Print.set("mapred.output.compress", "true");
+//    ABF1Print.set("mapred.output.compression.type", "BLOCK");
+//    ABF1Print.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
         
         FileInputFormat.setInputPaths(ABF1Print, otherArgs[0]);
         FileOutputFormat.setOutputPath(ABF1Print, new Path(otherArgs[1]));
