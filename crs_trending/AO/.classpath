@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/conformed_pty_mapping.db.zip"/>
+	<classpathentry kind="lib" path="lib/fetl_base_feed.jar"/>
+	<classpathentry kind="lib" path="lib/fetl_hadoop_io.jar"/>
+	<classpathentry kind="lib" path="lib/fetl_sequence_projector.jar" sourcepath="/sequence_projector"/>
+	<classpathentry kind="lib" path="lib/hadoop-0.20.2-core.jar" sourcepath="/hadoop-20.1"/>
+	<classpathentry kind="lib" path="lib/hadoop-mapred-0.21.0.jar" sourcepath="/hadoop-20.1"/>
+	<classpathentry kind="lib" path="lib/sdsProcessing.jar"/>
+	<classpathentry kind="lib" path="lib/sqlitejdbc-v054.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
