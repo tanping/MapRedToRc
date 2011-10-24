@@ -3,6 +3,7 @@ rm *jar
 
 javac -classpath lib/hadoop-0.20.2-core.jar:lib/hive-exec-0.8.0-SNAPSHOT.jar:lib/commons-cli-2.0-SNAPSHOT.jar:lib/commons-logging-1.0.4.jar com/yahoo/ccdi/fetl/*java
 
+
 #javac -classpath /home/tanping/src/hadoop-0.20.2/hadoop-0.20.2-core.jar:/home/tanping/src/hadoop-0.18.3/lib/commons-cli-2.0-SNAPSHOT.jar:lib/hive-exec-0.6.0.jar com/yahoo/ccdi/fetl/*java
 
 jar cvf ABF1RCPrinter.jar .
