@@ -18,9 +18,8 @@ import com.yahoo.ccdi.fetl.GlobalConfVarNames;
 import com.yahoo.ccdi.fetl.MetricsKeyType;
 import com.yahoo.ccdi.fetl.MetricsTypeTextOutputFormat;
 import com.yahoo.ccdi.fetl.MetricsValueType;
-import com.yahoo.ccdi.fetl.SequenceProjectorFormatExt;
+//import com.yahoo.ccdi.fetl.SequenceProjectorFormatExt;
 import com.yahoo.ccdi.fetl.sequence.mapreduce.SequenceProjectorFormat;
-import com.yahoo.yst.sds.ULT.ULTRecordJT;
 
 public class ULTReaderDriver extends Configured implements Tool {
 
@@ -34,33 +33,33 @@ public class ULTReaderDriver extends Configured implements Tool {
     }
     
 
-//    String alloffset = conf.get("alloffset");
-//    if (alloffset == null || alloffset.isEmpty()) {
-//      conf.set("alloffset", "512");
-//    }
-//    String propoffset = conf.get("propoffset");
-//    if (propoffset == null || propoffset.isEmpty()) {
-//      conf.set("propoffset", "8");
-//    }
-//    
-//    int numAllOffset = 0;
-//    try {
-//      numAllOffset = Integer.parseInt(alloffset);
-//    } catch (Exception e){
-//      numAllOffset = GlobalConfVarNames.ALL_REDUCER_OFFSET_DEFAULT;
-//      e.printStackTrace();
-//    }
-//    
-//    int numPropOffset = 0;
-//    try {
-//    numPropOffset = Integer.parseInt(propoffset);
-//    } catch (Exception e){
-//      numPropOffset = GlobalConfVarNames.PROPERTY_REDUCER_OFFSET_DEFAULT;
-//      e.printStackTrace();
-//    }
-//    
-//    int numReduceTasks = 
-//      numAllOffset + GlobalConfVarNames.NUM_PROPERTY * numPropOffset;
+    String alloffset = conf.get("alloffset");
+    if (alloffset == null || alloffset.isEmpty()) {
+      conf.set("alloffset", "512");
+    }
+    String propoffset = conf.get("propoffset");
+    if (propoffset == null || propoffset.isEmpty()) {
+      conf.set("propoffset", "8");
+    }
+    
+    int numAllOffset = 0;
+    try {
+      numAllOffset = Integer.parseInt(alloffset);
+    } catch (Exception e){
+      numAllOffset = GlobalConfVarNames.ALL_REDUCER_OFFSET;
+      e.printStackTrace();
+    }
+    
+    int numPropOffset = 0;
+    try {
+    numPropOffset = Integer.parseInt(propoffset);
+    } catch (Exception e){
+      numPropOffset = GlobalConfVarNames.PROPERTY_REDUCER_OFFSET;
+      e.printStackTrace();
+    }
+    
+    int numReduceTasks = 
+      numAllOffset + GlobalConfVarNames.NUM_PROPERTY * numPropOffset;
     
     Job job = new Job(conf);
     job.setJarByClass(ULTReaderDriver.class);
@@ -107,7 +106,7 @@ public class ULTReaderDriver extends Configured implements Tool {
     
     FileOutputFormat.setOutputPath(job, new Path(output));
     
-    int numReduceTasks = GlobalConfVarNames.NUM_REDUCERS;
+    //int numReduceTasks = GlobalConfVarNames.NUM_REDUCERS;
     job.setNumReduceTasks(numReduceTasks);
 
     boolean success = job.waitForCompletion(true);
@@ -118,7 +117,6 @@ public class ULTReaderDriver extends Configured implements Tool {
         hdfs.delete(path, false);
       }
       FSDataOutputStream outputStream = hdfs.create(path);
-      System.out.println("Metrics summary output is : " + path);
       String propArray[] = {GlobalConfVarNames.ALL_PROPERTY_ID,
           GlobalConfVarNames.MAIL_PROPERTY_ID,
           GlobalConfVarNames.FRONT_PAGE_PROPERTY_ID,
