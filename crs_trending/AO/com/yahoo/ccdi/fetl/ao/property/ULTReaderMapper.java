@@ -18,6 +18,7 @@ import com.yahoo.ccdi.fetl.GlobalConfVarNames;
 import com.yahoo.ccdi.fetl.MetricsKeyType;
 import com.yahoo.ccdi.fetl.MetricsValueType;
 import com.yahoo.ccdi.fetl.SQLiteCachedMap;
+import com.yahoo.ccdi.fetl.base.DHRTag;
 
 public class ULTReaderMapper extends
 // Mapper<Text, ULTRecordJT, MetricsKeyType, MetricsValueType> {
@@ -30,6 +31,8 @@ public class ULTReaderMapper extends
   static private String prevCookie = "";
 
   private static int lineNumber = 0;
+  
+  private static boolean isReg = true;
 
   @Override
   public void setup(Context context) throws IOException, InterruptedException {
@@ -39,6 +42,11 @@ public class ULTReaderMapper extends
     getInterestedPropertyIdSet();
     getInterestedSpaceIdSet();
     setupSqliteCachedMap(jConf);
+    
+    String reg = jConf.get("register");
+    if (!reg.equals("true")){
+      isReg = false;
+    }
   }
 
   @Override
@@ -50,6 +58,14 @@ public class ULTReaderMapper extends
       String recordtype = (String) value.get(1);
       String adinfo = (String) value.get(2);
       String spaceid = (String) value.get(3);
+      long dhrTag = 0L;
+      try { 
+        dhrTag = Long.parseLong((String)value.get(4));
+      } catch (NumberFormatException ne){
+        ne.printStackTrace();
+      }
+      //DHRTag
+      boolean dhrtag = ((dhrTag & (1 << DHRTag.ADS_OCTOPUS.getIndex())) != 0 ?true:false);
       
       System.out.println("bcookie : " + bcookie + "\t recordtype : "+recordtype
           +"\t adinfo : = "+ adinfo + "\t spaceid = "+spaceid);

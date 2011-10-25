@@ -61,6 +61,11 @@ public class ULTReaderDriver extends Configured implements Tool {
     int numReduceTasks = 
       numAllOffset + GlobalConfVarNames.NUM_PROPERTY * numPropOffset;
     
+    String isReg = conf.get("register");
+    if (isReg == null || isReg.isEmpty()) {
+      conf.set("register", "true");
+    }
+    
     Job job = new Job(conf);
     job.setJarByClass(ULTReaderDriver.class);
     job.setJobName(conf.get("mapred.job.name", "crs_trending_property_metrics"));
